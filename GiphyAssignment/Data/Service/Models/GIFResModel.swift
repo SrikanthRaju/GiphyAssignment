@@ -36,7 +36,7 @@ public struct GIFDataModel: Codable, Hashable {
 
 public struct GIFImagesModel: Codable {
   public let original: FixedHeight
-  public let fixedHeight: FixedHeight?
+  public let fixedHeightDownsampled: FixedHeight?
 }
 
 public struct FixedHeight: Codable {

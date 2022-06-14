@@ -45,7 +45,6 @@ final class GiphyCell: UICollectionViewCell, CellDataProvider {
                 self?.animatedImageView.prepareForAnimation(withGIFURL: gifPathUrl)
             }
         }
-        
         favoriteButton.isSelected = isFavouriteGIF(model.id)
     }
 

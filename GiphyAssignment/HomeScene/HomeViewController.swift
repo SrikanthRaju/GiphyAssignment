@@ -26,6 +26,8 @@ class HomeViewController: UIViewController {
     private let imageFetcher: AsyncImageFetcher
 
     private var disposables: Set<AnyCancellable> = []
+    private var searchDisposables: Set<AnyCancellable> = []
+    private var trendingDisposables: Set<AnyCancellable> = []
 
     init(viewModel: HomeViewModel, imageFetcher: AsyncImageFetcher) {
         self.viewModel = viewModel
@@ -39,38 +41,44 @@ class HomeViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         createUI()
 
-        viewModel.searchManager.loadData
-            .dropFirst()
-            .sink { [weak self] result in
+        /// To update the list data when state switches between search and trending
+
+        viewModel.$isSearchActive
+            .sink(receiveValue: { [weak self] _isSearchActive in
                 guard let self = self else {
                     self?.isLoadingMore = false
                     return
                 }
-
-                switch result {
-                case .success(let result):
-                    let gifmodels = result.1.compactMap{ GIF($0) }
-                        DispatchQueue.main.async {
-                            if result.0 == .reset {
-                                self.collectViewHandler.set(gifmodels)
-                            } else {
-                                self.collectViewHandler.add(gifmodels)
-                            }
-
-                            self.isLoadingMore = false
-                        }
-                case .failure(_):
-                    break
-
+                self.collectViewHandler.clearData()
+                if !_isSearchActive {
+                    self.searchDisposables.forEach({ $0.cancel() })
+                    self.observeTrending()
+                    self.collectViewHandler.add(self.viewModel.trendingManager.allGifs.compactMap{ GIF($0) })
+                } else {
+                    self.trendingDisposables.forEach({ $0.cancel() })
+                    self.observeSearching()
                 }
-            }
+                self.isLoadingMore = false
+            })
             .store(in: &disposables)
 
+        /// To update the visible cell states if user has disliked the gif from diffrent scene
+        NotificationCenter.default.publisher(for: Notification.Name.NSManagedObjectContextDidSave)
+            .map {$0.object}
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] obj in
+                guard let self = self else { return }
+                self.collectViewHandler.reloadVisibleCells()
+            }.store(in: &disposables)
+    }
 
+    func observeTrending() {
         viewModel.trendingManager.loadData
             .sink { [weak self] result in
                 guard let self = self else {
@@ -94,33 +102,39 @@ class HomeViewController: UIViewController {
 
                 }
             }
-            .store(in: &disposables)
-
-        /// To update the list data when state switches between search and trending
-
-        viewModel.$isSearchActive
-                .sink(receiveValue: { [weak self] _isSearchActive in
-                    guard let self = self else {
-                        self?.isLoadingMore = false
-                        return
-                    }
-                    self.collectViewHandler.clearData()
-                    if !_isSearchActive {
-                        self.collectViewHandler.add(self.viewModel.trendingManager.allGifs.compactMap{ GIF($0) })
-                    }
-                    self.isLoadingMore = false
-                })
-                    .store(in: &disposables)
-
-        /// To update the visible cell states if user has disliked the gif from diffrent scene
-        NotificationCenter.default.publisher(for: Notification.Name.NSManagedObjectContextDidSave)
-            .map {$0.object}
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] obj in
-                guard let self = self else { return }
-                self.collectViewHandler.reloadVisibleCells()
-            }.store(in: &disposables)
+            .store(in: &trendingDisposables)
     }
+
+
+    func observeSearching() {
+
+        viewModel.searchManager.loadData
+            .dropFirst()
+            .sink { [weak self] result in
+                guard let self = self else {
+                    self?.isLoadingMore = false
+                    return
+                }
+                switch result {
+                case .success(let result):
+                    let gifmodels = result.1.compactMap{ GIF($0) }
+                        DispatchQueue.main.async {
+                            if result.0 == .reset {
+                                self.collectViewHandler.set(gifmodels)
+                            } else {
+                                self.collectViewHandler.add(gifmodels)
+                            }
+
+                            self.isLoadingMore = false
+                        }
+                case .failure(_):
+                    break
+
+                }
+            }
+            .store(in: &searchDisposables)
+    }
+
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)

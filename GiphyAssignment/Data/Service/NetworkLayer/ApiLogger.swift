@@ -24,7 +24,14 @@ public final class DefaultApiLogger: ApiLogger {
     }
 
     public func log(error: Error) {
-        printIfDebug("\(error)")
+
+        let taskState = (error as NSError).userInfo[NSLocalizedDescriptionKey] as! String
+        let urlString = (error as NSError).userInfo[NSURLErrorFailingURLStringErrorKey] as! String
+        let urlComponents = URLComponents(string: urlString)
+        print("-------------")
+        print("[\(taskState)]: \(urlString)")
+        print("params: \(urlComponents!.queryItems!)")
+        print("-------------")
     }
 }
 

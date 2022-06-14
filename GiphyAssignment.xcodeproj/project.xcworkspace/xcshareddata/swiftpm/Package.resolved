@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kaishin/Gifu.git",
       "state" : {
-        "branch" : "master",
-        "revision" : "b3faac8bf96f11aca616657ba3e054dea3b062c4"
+        "revision" : "51f2eab32903e336f590c013267cfa4d7f8b06c4",
+        "version" : "3.3.1"
       }
     },
     {

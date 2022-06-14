@@ -35,6 +35,7 @@ class HomeViewModel {
 
     func loadData() {
 
+
         $searchString
             .debounce(for: .seconds(0.2), scheduler: DispatchQueue.global(qos: .background))
             .subscribe(on: DispatchQueue.global(qos: .background))

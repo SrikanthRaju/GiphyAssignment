@@ -16,7 +16,7 @@ struct GIF {
     }
 
     init?(_ dataModel: GIFDataModel) {
-        guard let downsized = dataModel.images.fixedHeight, let downSizedUrl = URL(string: downsized.url) else {
+        guard let downsized = dataModel.images.fixedHeightDownsampled, let downSizedUrl = URL(string: downsized.url) else {
             guard let originalUrl = URL(string: dataModel.images.original.url) else {
                 return nil
             }
