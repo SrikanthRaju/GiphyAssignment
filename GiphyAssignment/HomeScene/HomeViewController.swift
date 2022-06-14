@@ -253,8 +253,8 @@ extension HomeViewController: UISearchControllerDelegate {
 
 
 extension HomeViewController: GiphyCellDelegate {
-    func didSelectFavourite(_ cell: GiphyCell, forIndexPath indexPath: IndexPath) {
-        if let item = collectViewHandler.item(at: indexPath) {
+    func didSelectFavourite(_ cell: GiphyCell, withModel model: GIF?) {
+        if let item = model {
             viewModel.updateGifFavouriteState(item)
         }
     }

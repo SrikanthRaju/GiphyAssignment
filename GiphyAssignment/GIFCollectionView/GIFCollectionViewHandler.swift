@@ -37,7 +37,7 @@ extension GIFCollectionViewHandler {
 
     private func cellProvider(_ collectionView: UICollectionView, indexPath: IndexPath, data: Item) -> UICollectionViewCell? {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellType.reuseId, for: indexPath) as! CellType
-        cell.load(data, forIndexPath: indexPath)
+        cell.load(data)
         cell.delegate = cellDelegate
 
         imageFetcher?.getGIFFor(data as! GIF, priority: .veryHigh, index: indexPath.row, completionHandler: { [weak cell] (index, data) in

@@ -22,7 +22,7 @@ protocol CellDataProvider: AnyObject, ReuseID {
     associatedtype DataItem: Hashable
     var delegate: GiphyCellDelegate? { get set }
 
-    func load(_ model: DataItem, forIndexPath indexPath: IndexPath)
+    func load(_ model: DataItem)
 }
 
 enum Section: Hashable {

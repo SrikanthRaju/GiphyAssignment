@@ -12,7 +12,7 @@ import Gifu
 
 // MARK:- GIFCellDelegate
 protocol GiphyCellDelegate: AnyObject {
-    func didSelectFavourite(_ cell: GiphyCell, forIndexPath indexPath: IndexPath)
+    func didSelectFavourite(_ cell: GiphyCell, withModel model: GIF?)
 }
 
 ///
@@ -24,7 +24,7 @@ final class GiphyCell: UICollectionViewCell, CellDataProvider {
     private let animatedImageView = GIFImageView()
     private let favoriteButton = UIButton(type: .custom)
     weak var delegate: GiphyCellDelegate?
-    private var indexPath: IndexPath?
+    private var item: DataItem?
 
     typealias DataItem = GIF
 
@@ -37,8 +37,8 @@ final class GiphyCell: UICollectionViewCell, CellDataProvider {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func load(_ model: DataItem, forIndexPath indexPath: IndexPath) {
-        self.indexPath = indexPath
+    func load(_ model: DataItem) {
+        self.item = model
 
         model.getGifPathUrl { [weak self] url in
             if let gifPathUrl = url {
@@ -121,8 +121,8 @@ extension GiphyCell {
     }
 
     @objc private func favouriteAction(_ sender: Any) {
-        if let indexPath = indexPath {
-            delegate?.didSelectFavourite(self, forIndexPath: indexPath)
+        if let item = item {
+            delegate?.didSelectFavourite(self, withModel: item)
         }
     }
 }
