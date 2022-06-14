@@ -149,16 +149,12 @@
 			isa = PBXGroup;
 			children = (
 				F44E816A28586F5F00C3BAE3 /* Application */,
-				F44E76EA28554958000518F6 /* HomeScene */,
-				F44E76EB2855496E000518F6 /* FavouriteScene */,
-				F44E76EC285549BD000518F6 /* GIFCollectionView */,
+				F44E81762858ACF300C3BAE3 /* UI */,
 				F44E773C2855D071000518F6 /* Domain */,
 				F44E77392855CF3A000518F6 /* Common */,
 				F44E773A2855CFA9000518F6 /* Data */,
 				F450D4DE2850D695001D6DDD /* rock.gif */,
 				F40C2CCD2842958100F28794 /* Assets.xcassets */,
-				F40C2CCF2842958100F28794 /* LaunchScreen.storyboard */,
-				F40C2CD22842958100F28794 /* Info.plist */,
 			);
 			path = GiphyAssignment;
 			sourceTree = "<group>";
@@ -288,12 +284,24 @@
 		F44E816A28586F5F00C3BAE3 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				F40C2CCF2842958100F28794 /* LaunchScreen.storyboard */,
 				F450D4BD284F39B6001D6DDD /* Config.swift */,
 				F40C2CC42842958000F28794 /* AppDelegate.swift */,
 				F40C2CC62842958000F28794 /* SceneDelegate.swift */,
 				F450D4D4285084E8001D6DDD /* Main.storyboard */,
+				F40C2CD22842958100F28794 /* Info.plist */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		F44E81762858ACF300C3BAE3 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				F44E76EA28554958000518F6 /* HomeScene */,
+				F44E76EB2855496E000518F6 /* FavouriteScene */,
+				F44E76EC285549BD000518F6 /* GIFCollectionView */,
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 		F450D4E72852201C001D6DDD /* Service */ = {
@@ -622,7 +630,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T44TLZ8DUP;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GiphyAssignment/Info.plist;
+				INFOPLIST_FILE = GiphyAssignment/Application/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Giphy;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -651,7 +659,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T44TLZ8DUP;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GiphyAssignment/Info.plist;
+				INFOPLIST_FILE = GiphyAssignment/Application/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Giphy;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
